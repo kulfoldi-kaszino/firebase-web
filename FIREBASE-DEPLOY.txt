@@ -1,0 +1,35 @@
+FIREBASE + GITHUB DEPLOY
+
+Firebase project:
+kulfoldi-kaszino
+
+Live default Firebase Hosting domains after deployment:
+https://kulfoldi-kaszino.web.app/
+https://kulfoldi-kaszino.firebaseapp.com/
+
+Automatic deployment:
+- Every push to the main branch runs .github/workflows/firebase-hosting.yml
+- The workflow deploys the current public/ directory to Firebase Hosting live.
+- Both Firebase default domains are updated by the same Hosting deployment.
+
+IMPORTANT: SERVICE ACCOUNT KEY
+Do NOT commit the real Firebase Admin SDK JSON key to GitHub.
+
+For automatic GitHub deployment:
+1. GitHub repository -> Settings -> Secrets and variables -> Actions.
+2. Create Repository secret:
+   FIREBASE_SERVICE_ACCOUNT_KULFOLDI_KASZINO
+3. Paste the COMPLETE Firebase Admin SDK JSON into the VALUE of this secret.
+4. Commit/push the repository to main.
+5. GitHub Actions will create firebase-service-account.json only inside the temporary runner and deploy.
+
+The blank firebase-service-account.json file included in this archive is only for local/manual use.
+It is listed in .gitignore. Do not upload a filled version of it to GitHub.
+
+Required GitHub Actions setting:
+Repository -> Settings -> Actions -> General -> Allow GitHub Actions.
+
+Firebase Hosting:
+firebase.json publishes only public/
+No canonical tags are included.
+Internal site links are relative.
