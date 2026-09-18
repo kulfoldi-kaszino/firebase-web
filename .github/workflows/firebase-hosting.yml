@@ -9,10 +9,6 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: firebase-hosting-live
-  cancel-in-progress: true
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,17 +17,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create Firebase Admin SDK credential file
-        shell: bash
-        env:
-          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KULFOLDI_KASZINO }}
-        run: |
-          test -n "$FIREBASE_SERVICE_ACCOUNT_JSON"
-          printf '%s' "$FIREBASE_SERVICE_ACCOUNT_JSON" > firebase-service-account.json
-
       - name: Deploy to Firebase Hosting
-        shell: bash
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/firebase-service-account.json
-        run: |
-          npx --yes firebase-tools@15.22.1 deploy             --only hosting             --project kulfoldi-kaszino             --non-interactive
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KULFOLDI_KASZINO }}'
+          projectId: kulfoldi-kaszino
+          channelId: live
+          firebaseToolsVersion: '15.22.1'
